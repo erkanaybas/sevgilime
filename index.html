@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sadece Bizim İçin ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;600&display=swap');
+        :root { --pink: #ff4d6d; --dark: #0f0f12; }
+        body { margin: 0; background: var(--dark); color: white; font-family: 'Montserrat', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        #login-screen { position: fixed; inset: 0; background: #000; z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
+        input { padding: 15px; border-radius: 30px; border: 2px solid var(--pink); background: none; color: white; text-align: center; font-size: 18px; margin: 20px 0; outline: none; width: 250px; }
+        #main-content { display: none; width: 90%; max-width: 450px; animation: fadeIn 1.5s; }
+        .glass-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border-radius: 40px; padding: 25px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 40px 100px rgba(0,0,0,0.8); }
+        .image-container { width: 100%; height: 320px; border-radius: 30px; overflow: hidden; border: 3px solid var(--pink); margin-bottom: 20px; }
+        .image-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s ease; }
+        .spotify-bar { background: rgba(255,77,109,0.15); border-radius: 20px; padding: 12px; display: flex; align-items: center; gap: 15px; margin: 15px 0; }
+        .play-icon { width: 35px; height: 35px; background: var(--pink); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; }
+        .letter-text { text-align: left; line-height: 1.6; font-size: 15px; display: none; }
+        .btn { background: var(--pink); color: white; border: none; padding: 15px 30px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: 0.3s; width: 100%; font-size: 16px; margin-top: 10px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+<div id="login-screen">
+    <h1 style="font-family:'Dancing Script'; font-size: 3rem; color: var(--pink);">Hoş Geldin Meleğim ✨</h1>
+    <p>Kilidi açmak için seni en çok seven kişinin adını yaz:</p>
+    <input type="text" id="passInput" placeholder="Buraya yaz...">
+    <button class="btn" onclick="checkPass()" style="width: auto;">Giriş Yap ❤️</button>
+</div>
+
+<div id="main-content">
+    <div class="glass-card">
+        <div id="content-view">
+            <div class="image-container"><img id="mainImg" src="https://pixeldrain.com/api/file/vWq1mAnX"></div>
+            <h2 id="photoTitle" style="font-family:'Dancing Script'; font-size: 2.2rem; margin: 10px 0; color: var(--pink);">Seni Seviyorum ✨</h2>
+            <div class="spotify-bar">
+                <div class="play-icon">▶</div>
+                <div style="flex: 1;"><div style="font-weight: 600; font-size: 13px;">Bizim Şarkımız.mp3</div><div style="font-size: 11px; color: #aaa;">Bir ömür boyu...</div></div>
+            </div>
+            <p id="photoDesc" style="font-size: 14px; min-height: 50px; color: #ddd;">Seninle her an bir masal gibi sevgilim.</p>
+            <button class="btn" onclick="nextStep()">Devam Et ❤️</button>
+        </div>
+        <div id="letter-view" class="letter-text">
+            <h2 style="font-family:'Dancing Script'; color: var(--pink); font-size: 2rem;">Sana Notum... ❤️</h2>
+            <p id="typing-letter"></p>
+            <button class="btn" onclick="location.reload()">Başa Dön ✨</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const data = [
+        {img: "https://pixeldrain.com/api/file/pLre7f5N", title: "O Gülüşün...", desc: "Dünyanın en güzel manzarası senin gülüşün."},
+        {img: "https://pixeldrain.com/api/file/m2S3v2u6", title: "Kıvırcığım 🌀", desc: "Her telini ayrı sevdiğim o güzel saçların..."},
+        {img: "https://pixeldrain.com/api/file/8vD9m6qN", title: "Sonsuz Aşk", desc: "Elin elimdeyken her şey çok daha güzel."}
+    ];
+    let step = -1;
+    function checkPass() {
+        let val = document.getElementById('passInput').value.toLowerCase();
+        if(val.includes("erkan")) {
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            startHearts();
+        } else { alert("Yanlış şifre! İpucu: Erkan"); }
+    }
+    function nextStep() {
+        step++;
+        confetti({ particleCount: 50, spread: 60 });
+        if(step < data.length) {
+            const img = document.getElementById('mainImg');
+            img.style.opacity = '0';
+            setTimeout(() => {
+                img.src = data[step].img;
+                document.getElementById('photoTitle').innerText = data[step].title;
+                document.getElementById('photoDesc').innerText = data[step].desc;
+                img.style.opacity = '1';
+            }, 400);
+        } else {
+            document.getElementById('content-view').style.display = 'none';
+            document.getElementById('letter-view').style.display = 'block';
+            typeLetter();
+        }
+    }
+    function typeLetter() {
+        const text = "Sen benim hayatımın en güzel mucizesisin. Seninle geçen her gün için şükrediyorum. O güzel kıvırcık saçların, dünyayı aydınlatan gülüşün ve bana olan bakışın... Seni her şeyden çok seviyorum Meleğim. İyi ki benimsin! ❤️";
+        let i = 0;
+        function type() {
+            if (i < text.length) {
+                document.getElementById('typing-letter').innerHTML += text.charAt(i);
+                i++; setTimeout(type, 50);
+            }
+        }
+        type();
+    }
+    function startHearts() {
+        setInterval(() => {
+            const h = document.createElement('div');
+            h.innerHTML = '❤️'; h.style.position = 'fixed'; h.style.left = Math.random() * 100 + 'vw';
+            h.style.top = '-5vh'; h.style.fontSize = '20px'; h.style.zIndex = '-1';
+            document.body.appendChild(h);
+            const d = Math.random() * 3000 + 2000;
+            h.animate([{ transform: 'translateY(0)' }, { transform: `translateY(110vh)` }], { duration: d });
+            setTimeout(() => h.remove(), d);
+        }, 300);
+    }
+</script>
+</body>
+</html>
